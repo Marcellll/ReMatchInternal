@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import customtkinter as ctk
 
 class Production:
     def __init__(self, parent_frame):
@@ -15,9 +16,9 @@ class Production:
         Create and arrange the widgets for the Production view.
         """
         # Frame 1: Details of the current choosen batch
-        self.frame1 = tk.Frame(self.parent_frame, bg="lightgray")
+        self.frame1 = ctk.CTkFrame(self.parent_frame)
         self.frame1.grid(row=0, column=0, sticky="nwse", padx=2, pady=2)
 
         # Everything that goes into the first frame
-        frame1_info_label = tk.Label(self.frame1, text="Information Production", font=("Verdana",16), padx=1, pady=1)
+        frame1_info_label = ctk.CTkLabel(self.frame1, text="Information Production", padx=1, pady=1)
         frame1_info_label.grid(row=0, column=0)
