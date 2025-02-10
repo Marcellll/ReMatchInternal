@@ -26,7 +26,7 @@ class Batch:
 
         # Frame 1: Details of the current choosen batch
         self.frame1 = ctk.CTkFrame(self.parent_frame)
-        self.frame1.grid(row=0, column=0, sticky="nwse", padx=2, pady=2,)
+        self.frame1.grid(row=0, column=0, sticky="nwse", padx=2, pady=2)
 
         # Everything that goes into the first frame
         frame1_info_label = ctk.CTkLabel(self.frame1, text="Information Planification", padx=5, pady=5, width = 500)

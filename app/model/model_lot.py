@@ -48,12 +48,34 @@ class Lot:
                             FROM public."Lot" L
                             LEFT JOIN public."Article" A
                             ON L."ID_Article" = A."ID"
+                            ORDER BY L."Lot" DESC
                         """)
         rows = cursor.fetchall()
         dbconnection.close()
         return rows
+    
+    def get_last_batch():
+        dbconnection = return_dbconnection()
+        cursor = dbconnection.cursor()
+        cursor.execute(""" SELECT MAX(L."Lot") FROM public."Lot" L
+                           WHERE CAST(L."Lot" as Text) LIKE '3301%'
+                        """)
+        rows = cursor.fetchall()
+        dbconnection.close()
+        return rows
+    
+    def insert_new_batch(nouveau_lot: 'Lot'):
+        dbconnection = return_dbconnection()
+        cursor = dbconnection.cursor()
+        cursor.execute(""" INSERT INTO public."Lot" 
+                            ("ID_Article", "Lot", "Date_modification", "Heure_modification", "Description")
+                            VALUES (%s, %s, %s, %s, %s)
+                        """, (nouveau_lot.article, nouveau_lot.lot, nouveau_lot.date_modification, nouveau_lot.heure_modification, nouveau_lot.description))
+        dbconnection.commit()
+        cursor.close()
+        dbconnection.close()
 
     
 if __name__ == "__main__":
-    print(Lot.get_all_batch())
+    print(Lot.get_last_batch())
         
