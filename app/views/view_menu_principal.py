@@ -21,7 +21,7 @@ class MenuPrincipal(ctk.CTk):
         sidebar.propagate(False)
 
         # Outer frame taking the whole space
-        outer_frame = tk.Frame(self, bg="#242424", width=self.winfo_screenwidth()*1.1, height=self.winfo_screenheight()*1.2)
+        outer_frame = tk.Frame(self, bg="#242424", width=self.winfo_screenwidth()*0.8, height=self.winfo_screenheight())
         outer_frame.pack(side="right", expand=True)
         outer_frame.columnconfigure(0, weight=1)
         outer_frame.grid_propagate(False)

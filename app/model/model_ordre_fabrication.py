@@ -103,6 +103,48 @@ class OrdreFabrication:
         dbconnection.commit()
         cursor.close()
         dbconnection.close()
+
+    def get_ordre_fabrication(status_of: StatusOF = None):
+        dbconnection = return_dbconnection()
+        cursor = dbconnection.cursor()
+        cursor.execute(f""" SELECT L."Lot",
+                                    A."Description_article",
+                                    OF."Status_OF",
+                                    OF."Date_debut",
+                                    OF."Date_fin",
+                                    L."Description"
+                            FROM public."Ordre_fabrication" as OF
+                            LEFT JOIN public."Lot" L
+                                ON OF."ID_Lot" = L."ID"
+                            LEFT JOIN public."Article" A
+                                ON L."ID_Article" = A."ID"
+                            WHERE OF."Status_OF" like '{status_of.value if status_of != None else "" }%'
+                        """)
+        rows = cursor.fetchall()
+        dbconnection.close()
+        return rows
+    
+    def get_open_ordre_fabrication():
+        dbconnection = return_dbconnection()
+        cursor = dbconnection.cursor()
+        cursor.execute(f""" SELECT L."Lot",
+                                    A."Description_article",
+                                    OF."Status_OF",
+                                    OF."Date_debut",
+                                    OF."Date_fin",
+                                    L."Description",
+                                    OF."Ordre_fabrication"
+                            FROM public."Ordre_fabrication" as OF
+                            LEFT JOIN public."Lot" L
+                                ON OF."ID_Lot" = L."ID"
+                            LEFT JOIN public."Article" A
+                                ON L."ID_Article" = A."ID"
+                            WHERE OF."Status_OF" = '{StatusOF.PLANIFIE.value}'
+                            ORDER BY OF."Ordre_fabrication" ASC
+                        """) 
+        rows = cursor.fetchall()
+        dbconnection.close()
+        return rows
         
 if __name__=="__main__":
-    OrdreFabrication.update_date(datetime.datetime.now().strftime("%Y-%m-%d"), datetime.datetime.now().strftime("%Y-%m-%d"), 681)
+    print(OrdreFabrication.get_open_ordre_fabrication())

@@ -44,7 +44,7 @@ class Lot:
 
         # Frame 1: Details of the current choosen batch
         self.frame1 = ctk.CTkFrame(self.parent_frame)
-        self.frame1.grid(row=0, column=0, sticky="nwse", padx=2, pady=2)     
+        self.frame1.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)     
 
         # Everything that goes into the first information frame
         self.frame1_info_label = ctk.CTkLabel(self.frame1, text="Information Lot", padx=5, pady=5, width = 250)
@@ -79,13 +79,17 @@ class Lot:
         #Converting a batch to an OF
         self.frame1_create_OF = ctk.CTkButton(self.frame1, text ="Créer OF", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\engrenage.png", button_width, button_height),
-                                                  command= lambda: NouveauLot())
+                                                  image=self.resize_image("static\\engrenage.png", button_width, button_height)
+                                                  )
         self.frame1_create_OF.grid(row=1, column=2)
 
         # Everything that goes into second frame with the treeview
         self.frame2 = ctk.CTkFrame(self.parent_frame)
-        self.frame2.grid(row=1, column=0, sticky="nwse", padx=2, pady=2)
+        self.frame2.grid(row=1, column=0, sticky="nsew", padx=2, pady=2)
+        self.frame21 = tk.Frame(self.frame2)
+        self.frame21.pack(fill='both', expand=True)
+        self.frame21_scrollbar = tk.Scrollbar(self.frame21)
+        self.frame21_scrollbar.pack(side="right", fill="y")
         #Refresh button
         #try:
         #    image_path = f"{os.getcwd()}\\static\\recharger.png"
@@ -103,7 +107,7 @@ class Lot:
         #self.frame2_adding_button.pack()
         #Treeview for the current batchs
         treeview_columns =('Lot', 'Description', 'Article', 'Date_modif', 'Heure_modif')
-        self.frame2_treeview = ttk.Treeview(self.frame2, columns=treeview_columns, show='headings')
+        self.frame2_treeview = ttk.Treeview(self.frame21, columns=treeview_columns, show='headings', yscrollcommand=self.frame21_scrollbar.set)
         #TODO: make the binding work
         self.frame2_treeview.bind("<Double-1>", self.display_lot)
         self.frame2_treeview.column("Lot", width=20, stretch=True)
@@ -116,12 +120,14 @@ class Lot:
         self.frame2_treeview.heading("Article", text="Article", anchor='center')
         self.frame2_treeview.heading("Date_modif", text="Date dernière modification", anchor='center')
         self.frame2_treeview.heading("Heure_modif", text="Heure dernière modification", anchor='center')
-        self.frame2_treeview.pack(fill='both')
+        self.frame2_treeview.pack(fill='both', expand= True)
+
+        self.frame21_scrollbar.config(command=self.frame2_treeview.yview)
 
         #Division of the section
         self.parent_frame.grid_columnconfigure(0, weight=1)
         self.parent_frame.grid_rowconfigure(0, weight=3)
-        self.parent_frame.grid_rowconfigure(1, weight=5)
+        self.parent_frame.grid_rowconfigure(1, weight=7)
 
         ControllerLot.populate_all_lot(self.frame2_treeview)
 
