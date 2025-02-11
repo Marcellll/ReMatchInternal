@@ -79,7 +79,8 @@ class Lot:
         #Converting a batch to an OF
         self.frame1_create_OF = ctk.CTkButton(self.frame1, text ="Créer OF", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\engrenage.png", button_width, button_height)
+                                                  image=self.resize_image("static\\engrenage.png", button_width, button_height),
+                                                  command= lambda: ControllerLot.create_new_OF(lot=self.lot.get(), article=self.article.get())
                                                   )
         self.frame1_create_OF.grid(row=1, column=2)
 

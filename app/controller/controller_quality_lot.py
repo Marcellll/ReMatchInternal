@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 from app.model.model_lot import Lot
 from app.model.model_article import Article, FrontBack
+from app.model.model_ordre_fabrication import OrdreFabrication, StatusOF
+from app.views.view_message_erreur import MessageErreur
 import datetime
 
 class ControllerLot:
@@ -26,7 +28,20 @@ class ControllerLot:
         Lot.insert_new_batch(nouveau_lot=nouveau_lot)
         window.destroy()
 
-    def create_new_OF():
-        pass
-
+    def create_new_OF(lot: int, article: str):
+        if lot == '':
+            MessageErreur(f"Double cliquez sur une ligne de lot pour créer l'OF")
+            return
+        
+        id_lot = Lot.get_id_from_lot(lot)[0][0]
+        
+        if article == 'None':
+            MessageErreur("Attribuez un article au lot avant de créer l'OF")
+            return
+        
+        if OrdreFabrication.is_ordre_fabrication_present(id_lot):
+            MessageErreur(f"L'ordre de fabrication existe déjà pour le lot: {lot}")
+            return
+        
+        OrdreFabrication.insert_new_ordre_fabrication(id_nouveau_lot=id_lot)
     

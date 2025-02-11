@@ -42,14 +42,12 @@ class OrdreFabrication:
         self.status_OF = status_OF
         self.ordre_planification = ordre_planification
 
-    def is_ordre_fabrication_present(lot:int) -> bool:
+    def is_ordre_fabrication_present(id_lot:int) -> bool:
         dbconnection = return_dbconnection()
         cursor = dbconnection.cursor()
-        cursor.execute(f""" SELECT L."Lot"
-                            FROM public."Ordre_fabrication" as OF
-                            LEFT JOIN public."Lot" L
-                            ON OF."ID_Lot" = L."ID" 
-                            WHERE L."Lot" = '{lot}'
+        cursor.execute(f""" SELECT OF."ID_Lot"
+                            FROM public."Ordre_fabrication" as OF 
+                            WHERE OF."ID_Lot" = '{id_lot}'
                         """)
         rows = cursor.fetchall()
         if len(rows) != 0:
@@ -59,13 +57,13 @@ class OrdreFabrication:
             dbconnection.close()
             return False
         
-    def insert_new_ordre_fabrication(nouveau_OF: 'OrdreFabrication'):
+    def insert_new_ordre_fabrication(id_nouveau_lot: int, date_debut: datetime.date = None, date_fin: datetime.date = None):
         dbconnection = return_dbconnection()
         cursor = dbconnection.cursor()
         cursor.execute(""" INSERT INTO public."Ordre_fabrication" 
                             ("ID_Lot", "Date_debut", "Date_fin", "Status_OF")
                             VALUES (%s, %s, %s, %s)
-                        """, (nouveau_OF.lot, nouveau_OF.date_debut, nouveau_OF.date_fin, StatusOF.CREE))
+                        """, (id_nouveau_lot, date_debut, date_fin, StatusOF.CREE.value))
         dbconnection.commit()
         cursor.close()
         dbconnection.close()
@@ -147,4 +145,4 @@ class OrdreFabrication:
         return rows
         
 if __name__=="__main__":
-    print(OrdreFabrication.get_open_ordre_fabrication())
+    print(OrdreFabrication.is_ordre_fabrication_present(330110474))

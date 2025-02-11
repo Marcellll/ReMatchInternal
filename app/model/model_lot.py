@@ -75,7 +75,16 @@ class Lot:
         cursor.close()
         dbconnection.close()
 
+    def get_id_from_lot(lot: str):
+        dbconnection = return_dbconnection()
+        cursor = dbconnection.cursor()
+        cursor.execute(f""" SELECT L."ID" FROM public."Lot" L
+                            WHERE L."Lot" = {int(lot)}
+                        """)
+        rows = cursor.fetchall()
+        dbconnection.close()
+        return rows
     
 if __name__ == "__main__":
-    print(Lot.get_last_batch())
+    print(Lot.get_id_from_lot(330110474)[0][0]) 
         
