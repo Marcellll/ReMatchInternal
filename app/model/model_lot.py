@@ -70,7 +70,10 @@ class Lot:
         cursor.execute(""" INSERT INTO public."Lot" 
                             ("ID_Article", "Lot", "Date_modification", "Heure_modification", "Description")
                             VALUES (%s, %s, %s, %s, %s)
+
                         """, (nouveau_lot.id_article, nouveau_lot.lot, nouveau_lot.date_modification, nouveau_lot.heure_modification, nouveau_lot.description))
+
+
         dbconnection.commit()
         cursor.close()
         dbconnection.close()
@@ -84,6 +87,7 @@ class Lot:
         rows = cursor.fetchall()
         dbconnection.close()
         return rows
+
     
     def update_information_lot(update_lot: 'Lot'):
         dbconnection = return_dbconnection()

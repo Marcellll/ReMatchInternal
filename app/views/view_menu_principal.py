@@ -10,14 +10,8 @@ class MenuPrincipal(ctk.CTk):
         super().__init__()
         self.title("Re-Match ERP")
         self.geometry(f"{self.winfo_screenwidth()}x{self.winfo_screenheight()}")
-        self.state("zoomed")
+        self.state("withdrawn")
         controller = ControllerMenuPrincipal(self)
-
-        # Outer frame taking the whole space
-        outer_frame = tk.Frame(self, bg="#242424", width = self.winfo_screenwidth()*0.8, height=self.winfo_screenheight())
-        outer_frame.pack(side="right", expand=True)
-        outer_frame.grid_propagate(False)
-        outer_frame.propagate(False)
 
         # Inner frame on the left, taking 20% of the screen on the left
         sidebar = ctk.CTkFrame(self, width = self.winfo_screenwidth()*0.2, height=self.winfo_screenheight())
@@ -25,6 +19,14 @@ class MenuPrincipal(ctk.CTk):
         sidebar.columnconfigure(0, weight=1)
         sidebar.grid_propagate(False)   #Restricts the buttons to not resize this frame
         sidebar.propagate(False)
+
+        # Outer frame taking the whole space
+        outer_frame = tk.Frame(self, bg="#242424", width=self.winfo_screenwidth()*1.2, height=self.winfo_screenheight()*1.1)
+        outer_frame.pack(side="right", expand=True)
+        outer_frame.columnconfigure(0, weight=1)
+        outer_frame.grid_propagate(False)
+        outer_frame.propagate(False)
+        
 
         #Production Button
         prodButton = ctk.CTkButton(sidebar, text="Production", height= 100, 
@@ -38,7 +40,7 @@ class MenuPrincipal(ctk.CTk):
         #Planification sub section
         planificationButton = ctk.CTkButton(prodSubSection, text="Planification", height=100, width=200 ,
                                         command= lambda : controller.create_new_view(outer_frame, sidebar, MenuButton.PLANIFICATION))
-        planificationButton.grid(row=0, column=0, )
+        planificationButton.grid(row=0, column=0)
 
         #Quality Button
         qualityButton = ctk.CTkButton(sidebar, text="Qualité", height= 100, 
