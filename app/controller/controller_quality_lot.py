@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from app.model.model_lot import Lot
 from app.model.model_article import Article, FrontBack
-from app.model.model_ordre_fabrication import OrdreFabrication, StatusOF
+from app.model.model_ordre_fabrication import OrdreFabrication
 from app.views.view_message_erreur import MessageErreur
 import datetime
 
@@ -46,3 +46,18 @@ class ControllerLot:
         
         OrdreFabrication.insert_new_ordre_fabrication(id_nouveau_lot=id_lot)
     
+    def save_lot(lot: int, article: str, update_description: str):
+        id_update_article = Article.get_id_article_from_description(article)
+        id_update_lot = Lot.get_id_from_lot(lot)[0][0]
+        update_lot = Lot(id=id_update_lot,
+                         id_article=id_update_article,
+                         date_modification=datetime.datetime.now().strftime("%Y-%m-%d"),
+                         heure_modification=datetime.datetime.now().strftime("%H:%M:%S"),
+                         description=update_description)
+        
+        if OrdreFabrication.is_ordre_fabrication_present(id_update_lot):
+            MessageErreur(f"""L'ordre de fabrication pour le lot {lot} existe déjà.\n
+                          Impossible de changer les caractéristiques du lot""")
+            return
+        
+        Lot.update_information_lot(update_lot=update_lot)
