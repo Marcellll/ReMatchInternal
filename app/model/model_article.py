@@ -48,3 +48,13 @@ class Article:
         rows = cursor.fetchall()
         dbconnection.close()
         return rows
+    
+    def get_id_article_from_description(article: str) -> int:
+        dbconnection = return_dbconnection()
+        cursor = dbconnection.cursor()
+        cursor.execute(f""" SELECT "ID" FROM public."Article"
+                            WHERE "Description_article" = '{article}'
+                        """)
+        rows = cursor.fetchall()
+        dbconnection.close()
+        return rows[0][0]

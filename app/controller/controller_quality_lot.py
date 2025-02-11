@@ -11,7 +11,8 @@ class ControllerLot:
         self.view = view
 
     def populate_all_lot(treeview: ttk.Treeview):
-        all_lot = Lot.get_all_batch()     
+        all_lot = Lot.get_all_batch()
+        treeview.delete(*treeview.get_children())   
         for lot in all_lot:
              new_line = [lot[0], lot[3], lot[2], lot[4], lot[5]]
              treeview.insert("", "end", values=new_line)

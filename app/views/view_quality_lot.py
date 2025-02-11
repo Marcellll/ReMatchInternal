@@ -73,16 +73,33 @@ class Lot:
         self.frame1_adding_button = ctk.CTkButton(self.frame1, text ="Nouveau lot", 
                                                   width=button_width, height=button_height, 
                                                   image=self.resize_image("static\\plus.png", button_width, button_height),
-                                                  command= lambda: NouveauLot())
+
+                                                  command= lambda: [NouveauLot(),
+                                                                    ControllerLot.populate_all_lot(self.frame2_treeview)])
+
         self.frame1_adding_button.grid(row=0, column=2)
 
         #Converting a batch to an OF
         self.frame1_create_OF = ctk.CTkButton(self.frame1, text ="Créer OF", 
                                                   width=button_width, height=button_height, 
                                                   image=self.resize_image("static\\engrenage.png", button_width, button_height),
-                                                  command= lambda: ControllerLot.create_new_OF(lot=self.lot.get(), article=self.article.get())
+
+                                                  command= lambda: [ControllerLot.create_new_OF(lot=self.lot.get(), article=self.article.get()),
+                                                                    ControllerLot.populate_all_lot(self.frame2_treeview)]
                                                   )
         self.frame1_create_OF.grid(row=1, column=2)
+
+        #Saving changes to a batch
+        self.frame1_save_OF = ctk.CTkButton(self.frame1, text ="Sauvegarder lot", 
+                                                  width=button_width, height=button_height, 
+                                                  image=self.resize_image("static\\sauvegarder.png", button_width, button_height),
+                                                  command= lambda: [ControllerLot.save_lot(lot=self.lot.get(), 
+                                                                                          article=self.article.get(),
+                                                                                          update_description=self.description.get()),
+                                                                    ControllerLot.populate_all_lot(self.frame2_treeview)]                                                  
+                                                  )
+        self.frame1_save_OF.grid(row=2, column=2)
+
 
         # Everything that goes into second frame with the treeview
         self.frame2 = ctk.CTkFrame(self.parent_frame)
