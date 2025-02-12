@@ -25,7 +25,6 @@ class OrdreFabrication:
                  date_debut: datetime.date = None,
                  date_fin: datetime.date = None,
                  status_OF: StatusOF = None,
-                 ordre_planification: int = None,
                 ):
         """
         Initialize a new OrdreFabrication instance.
@@ -40,7 +39,6 @@ class OrdreFabrication:
         self.date_debut = date_debut
         self.date_fin = date_fin
         self.status_OF = status_OF
-        self.ordre_planification = ordre_planification
 
     def is_ordre_fabrication_present(id_lot:int) -> bool:
         dbconnection = return_dbconnection()
@@ -68,18 +66,7 @@ class OrdreFabrication:
         cursor.close()
         dbconnection.close()
 
-    def update_ordre_planification(nouvel_ordre:int, id_lot: int):
-        dbconnection = return_dbconnection()
-        cursor = dbconnection.cursor()
-        cursor.execute(f""" UPDATE public."Ordre_fabrication" 
-                            SET "Ordre_planification" = {nouvel_ordre}
-                            WHERE "ID_Lot"={id_lot}
-                        """)
-        dbconnection.commit()
-        cursor.close()
-        dbconnection.close()
-
-    def update_status_of(nouveau_status: StatusOF, id_lot: int):
+    def update_status_ordre(nouveau_status: StatusOF, id_lot: int):
         dbconnection = return_dbconnection()
         cursor = dbconnection.cursor()
         cursor.execute(f""" UPDATE public."Ordre_fabrication" 
@@ -130,19 +117,39 @@ class OrdreFabrication:
                                     OF."Status_OF",
                                     OF."Date_debut",
                                     OF."Date_fin",
-                                    L."Description",
-                                    OF."Ordre_fabrication"
+                                    L."Description"
                             FROM public."Ordre_fabrication" as OF
                             LEFT JOIN public."Lot" L
                                 ON OF."ID_Lot" = L."ID"
                             LEFT JOIN public."Article" A
                                 ON L."ID_Article" = A."ID"
                             WHERE OF."Status_OF" = '{StatusOF.PLANIFIE.value}'
-                            ORDER BY OF."Ordre_fabrication" ASC
+                            ORDER BY OF."Date_debut" ASC
                         """) 
+        rows = cursor.fetchall()
+        dbconnection.close()
+        return rows
+    
+    def get_batch_to_work_on():
+        dbconnection = return_dbconnection()
+        cursor = dbconnection.cursor()
+        cursor.execute(f""" SELECT L."Lot",
+                                    A."Description_article",
+                                    OF."Status_OF",
+                                    OF."Date_debut",
+                                    OF."Date_fin",
+                                    L."Description"
+                            FROM public."Ordre_fabrication" OF
+                            LEFT JOIN public."Lot" L
+                            ON L."ID" = OF."ID_Lot" 
+                            LEFT JOIN public."Article" A
+                            ON L."ID_Article" = A."ID"
+                            WHERE OF."Status_OF" <> '{StatusOF.PLANIFIE.value}'
+                            ORDER BY L."Lot" DESC
+                        """)
         rows = cursor.fetchall()
         dbconnection.close()
         return rows
         
 if __name__=="__main__":
-    print(OrdreFabrication.is_ordre_fabrication_present(330110474))
+    print(OrdreFabrication.get_batch_to_work_on())

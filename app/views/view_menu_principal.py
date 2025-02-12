@@ -21,7 +21,7 @@ class MenuPrincipal(ctk.CTk):
         sidebar.propagate(False)
 
         # Outer frame taking the whole space
-        outer_frame = tk.Frame(self, bg="#242424", width=self.winfo_screenwidth()*1.2, height=self.winfo_screenheight()*1.1)
+        outer_frame = tk.Frame(self, bg="#242424", width=self.winfo_screenwidth()*1.2, height=self.winfo_screenheight()*1.4)
         outer_frame.pack(side="right", expand=True)
         outer_frame.columnconfigure(0, weight=1)
         outer_frame.grid_propagate(False)
@@ -54,7 +54,7 @@ class MenuPrincipal(ctk.CTk):
         #Batch sub section
         batchButton = ctk.CTkButton(qualitySubSection, text="Lot", height=100, width=200 ,
                                         command= lambda : controller.create_new_view(outer_frame, sidebar, MenuButton.LOT))
-        batchButton.grid(row=0, column=0, )
+        batchButton.grid(row=0, column=0)
 
         #Settings button
         settingsButton = ctk.CTkButton(sidebar, text="Paramètres", height= 100, 

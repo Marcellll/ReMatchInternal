@@ -14,8 +14,9 @@ class ControllerLot:
         all_lot = Lot.get_all_batch()
         treeview.delete(*treeview.get_children())   
         for lot in all_lot:
-             new_line = [lot[0], lot[3], lot[2], lot[4], lot[5]]
-             treeview.insert("", "end", values=new_line)
+            status = "Non crée" if lot[6] == None else lot[6]
+            new_line = [lot[0], lot[3], lot[2], lot[4], lot[5], status]
+            treeview.insert("", "end", values=new_line, tags=(f"{status}"))
     
     def get_front_end_article():
         return Article.get_article_front_back(FrontBack.Frontend)
