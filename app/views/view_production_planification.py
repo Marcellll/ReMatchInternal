@@ -43,7 +43,7 @@ class Batch:
         except Exception as e:
             print(f"Error loading or resizing image: {e}")
 
-    def plan_lot(self, lot: str, status: str):
+    def plan_lot(self, lot: str, status: str, date_debut: str, date_fin:str):
         if lot == '':
             MessageErreur(f"Double cliquez sur une ligne de lot pour créer l'OF")
             return
@@ -52,7 +52,14 @@ class Batch:
             MessageErreur(f"Planification impossible de cet OF car il est en statut: {status}")
             return
 
-        PlanificationLot(lot=lot)
+        PlanificationLot(lot=lot,date_debut=date_debut, date_fin=date_fin)
+    
+    def clear_information_panel(self):
+        self.description.set("")
+        self.lot.set("")
+        self.type_terrain.set("")
+        self.date_debut.set("")
+        self.date_fin.set("")
 
     def create_widgets(self):
         """
@@ -114,11 +121,42 @@ class Batch:
         self.frame1_adding_button = ctk.CTkButton(self.frame1, text ="Planifier lot", 
                                                   width=button_width, height=button_height, 
                                                   image=self.resize_image("static\\planification.png", button_width, button_height),
-                                                  command= lambda: [self.plan_lot(lot=self.lot.get(), status=self.status),
+                                                  command= lambda: [self.plan_lot(lot=self.lot.get(), status=self.status, 
+                                                                                  date_debut=self.date_debut.get(), date_fin=self.date_fin.get()),
                                                                     ControllerPlanification.populate_ordre_to_be_worked_on(treeview=frame2_treeview),
                                                                     ControllerPlanification.populate_all_ordre_to_work_on(treeview=frame3_treeview)])
 
         self.frame1_adding_button.grid(row=0, column=3)
+        #Terminer un lot
+        self.frame1_refresh_button = ctk.CTkButton(self.frame1, text ="Terminer lot", 
+                                                  width=button_width, height=button_height, 
+                                                  image=self.resize_image("static\\ok.png", button_width, button_height),
+                                                  command= lambda: [ControllerPlanification.finish_ordre(self.lot.get()),
+                                                                    self.clear_information_panel(),
+                                                                    ControllerPlanification.populate_ordre_to_be_worked_on(treeview=frame2_treeview),
+                                                                    ControllerPlanification.populate_all_ordre_to_work_on(treeview=frame3_treeview)])
+
+        self.frame1_refresh_button.grid(row=1, column=3)
+        #Sauvegarder changement de date
+        self.frame1_save_button = ctk.CTkButton(self.frame1, text ="Enregistrer", 
+                                                  width=button_width, height=button_height, 
+                                                  image=self.resize_image("static\\sauvegarder.png", button_width, button_height),
+                                                  command= lambda: [ControllerPlanification.update_date(lot=self.lot.get(),
+                                                                                                       date_debut=self.date_debut.get(),
+                                                                                                       date_fin=self.date_fin.get()),
+                                                                    ControllerPlanification.populate_ordre_to_be_worked_on(treeview=frame2_treeview),
+                                                                    ControllerPlanification.populate_all_ordre_to_work_on(treeview=frame3_treeview)])
+
+        self.frame1_save_button.grid(row=2, column=3)
+        #Rafraîchir les listes
+        self.frame1_refresh_button = ctk.CTkButton(self.frame1, text ="Rafraîchir", 
+                                                  width=button_width, height=button_height, 
+                                                  image=self.resize_image("static\\recharger.png", button_width, button_height),
+                                                  command= lambda: [self.clear_information_panel(),
+                                                                    ControllerPlanification.populate_ordre_to_be_worked_on(treeview=frame2_treeview),
+                                                                    ControllerPlanification.populate_all_ordre_to_work_on(treeview=frame3_treeview)])
+
+        self.frame1_refresh_button.grid(row=3, column=3)
 
 
         # Verything that goes into second frame

@@ -19,7 +19,7 @@ class PlanificationLot:
         except Exception as e:
             print(f"Error loading or resizing image: {e}")
 
-    def __init__(self, lot):
+    def __init__(self, lot, date_debut, date_fin):
         button_width = 50
         button_height = 50
         planification_ordre = CTkToplevel()
@@ -29,8 +29,8 @@ class PlanificationLot:
         planification_ordre.attributes("-topmost", True)
 
         self.lot = tk.StringVar(value=lot)
-        self.date_debut = tk.StringVar()
-        self.date_fin = tk.StringVar()
+        self.date_debut = tk.StringVar(value=date_debut)
+        self.date_fin = tk.StringVar(value=date_fin)
 
         #Lot
         lot_label = CTkLabel(planification_ordre, text="Lot :",  padx=1, pady=1)
@@ -60,7 +60,7 @@ class PlanificationLot:
 
         #Add the save button
         nouveau_lot_save_button = CTkButton(planification_ordre, text="Valider", width=150,
-                                            command= lambda:[ControllerPlanification.update_date(lot=self.lot.get(), 
+                                            command= lambda:[ControllerPlanification.planifie_ordre(lot=self.lot.get(), 
                                                                                                  date_debut=self.date_debut.get(), 
                                                                                                  date_fin=self.date_fin.get()),
                                                              planification_ordre.destroy()])
