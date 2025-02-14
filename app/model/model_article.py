@@ -41,7 +41,7 @@ class Article:
     def get_article_front_back(front_back: FrontBack):
         dbconnection = return_dbconnection()
         cursor = dbconnection.cursor()
-        cursor.execute(f""" SELECT A."ID", A."Description_article"
+        cursor.execute(f""" SELECT A."ID", A."Description_article", A."Numero_article"
                             FROM public."Article" A
                             WHERE A."Front/Back" = '{front_back.value}'
                         """)

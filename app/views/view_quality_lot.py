@@ -108,21 +108,6 @@ class Lot:
         self.frame21.pack(fill='both', expand=True)
         self.frame21_scrollbar = tk.Scrollbar(self.frame21)
         self.frame21_scrollbar.pack(side="right", fill="y")
-        #Refresh button
-        #try:
-        #    image_path = f"{os.getcwd()}\\static\\recharger.png"
-        #    # Open the image
-        #    original_image = Image.open(image_path)
-        #    # Resize the image to fit the button
-        #    resized_image = original_image.resize((button_width, button_height))
-        #    # Convert the resized image to a Tkinter-compatible format
-        #    image = ctk.CTkImage(resized_image, resized_image)
-        #except Exception as e:
-        #    print(f"Error loading or resizing image: {e}")
-        #self.frame2_adding_button = ctk.CTkButton(self.frame2, text ="", 
-        #                                          width=button_width, height=button_height, 
-        #                                          image=image, command= lambda: ControllerLot.populate_all_lot())
-        #self.frame2_adding_button.pack()
         #Treeview for the current batchs
         treeview_style = ttk.Style()
         treeview_style.configure("treeview_style.Treeview", font=('Verdana', 16), rowheight=45)

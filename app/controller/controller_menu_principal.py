@@ -4,6 +4,7 @@ from app.views.view_production_planification import Batch
 from app.views.view_quality import Quality
 from app.views.view_quality_lot import Lot
 from app.views.view_settings import Settings
+from app.views.view_nomenclature import Nomenclature
 from enum import Enum
 
 class MenuButton(Enum):
@@ -12,6 +13,7 @@ class MenuButton(Enum):
     QUALITY = 3
     LOT = 4
     SETTINGS = 5
+    NOMENCLATURE = 6
 
 
 class ControllerMenuPrincipal:
@@ -42,4 +44,7 @@ class ControllerMenuPrincipal:
             case MenuButton.LOT:
                 Lot(mainWidget)
             case MenuButton.SETTINGS:
+                self.hide_show_widget(subMenu)
                 Settings(mainWidget)
+            case MenuButton.NOMENCLATURE:
+                Nomenclature(mainWidget)

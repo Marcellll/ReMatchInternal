@@ -74,5 +74,19 @@ class Nomenclature:
         cursor.close()
         dbconnection.close()
 
+    def is_article_present(id_article: int, id_nomenclature: int) -> bool:
+        dbconnection = return_dbconnection()
+        cursor = dbconnection.cursor()
+        cursor.execute(f""" SELECT "ID" FROM public."Nomenclature"
+                            WHERE "ID_Article" = {id_article} AND "ID_Nomenclature" = {id_nomenclature}   
+                            """)
+        rows = cursor.fetchall()
+        if len(rows) != 0:
+            dbconnection.close()
+            return True
+        else:
+            dbconnection.close()
+            return False
+
 if __name__ == "__main__":
     pass

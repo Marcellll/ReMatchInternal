@@ -58,8 +58,17 @@ class MenuPrincipal(ctk.CTk):
 
         #Settings button
         settingsButton = ctk.CTkButton(sidebar, text="Paramètres", height= 100, 
-                                     command= lambda : controller.create_new_view(outer_frame, sidebar, MenuButton.SETTINGS))
+                                     command= lambda : controller.create_new_view(outer_frame, sidebar, MenuButton.SETTINGS, settingsSubSection))
         settingsButton.grid(row=4, column=0, sticky='ew')
+        #Sub section for Settings to encapsulate the sub menu buttons
+        settingsSubSection = ctk.CTkFrame(sidebar) 
+        settingsSubSection.grid(row=5, column=0, sticky='ew')
+        settingsSubSection.columnconfigure(0, weight=1)
+        settingsSubSection.grid_remove()
+        #Batch sub section
+        nomenclatureButton = ctk.CTkButton(settingsSubSection, text="Nomenclature", height=100, width=200 ,
+                                        command= lambda : controller.create_new_view(outer_frame, sidebar, MenuButton.NOMENCLATURE))
+        nomenclatureButton.grid(row=0, column=0)
 
         #Initializes the production view
         Production(outer_frame)
