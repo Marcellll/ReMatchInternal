@@ -7,8 +7,8 @@ from app.views.view_calendrier import ViewCalendrier
 from app.views.view_message_erreur import MessageErreur
 from app.views.view_production_planification_nouveau import PlanificationLot
 from PIL import Image
-import os
-
+from os import path
+import utils.settings as settings
 
 class Batch:
     def __init__(self, parent_frame, status = ""):
@@ -31,9 +31,9 @@ class Batch:
         self.status = values[2]
 
 
-    def resize_image(self, path: str, image_width: int, image_height:int):
+    def resize_image(self, icon_path: str, image_width: int, image_height:int):
         try:
-            image_path = f"{os.getcwd()}\\{path}"
+            image_path = path.abspath(path.join(settings.path_name,icon_path))
             # Open the image
             original_image = Image.open(image_path)
             # Resize the image to fit the button

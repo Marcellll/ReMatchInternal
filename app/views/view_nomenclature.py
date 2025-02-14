@@ -1,11 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
-import os
+from os import path
 from PIL import Image
 from app.controller.controller_nomenclature import ControllerNomenclature
 from app.views.view_message_erreur import MessageErreur
 from app.views.view_nomenclature_ajouter import NomenclatureNouveau
+import utils.settings as settings
 
 class Nomenclature:
     def __init__(self, parent_frame):
@@ -33,9 +34,9 @@ class Nomenclature:
     def get_article_to_delete(self):
         return self.article_to_delete
     
-    def resize_image(self, path: str, image_width: int, image_height:int):
+    def resize_image(self, icon_path: str, image_width: int, image_height:int):
         try:
-            image_path = f"{os.getcwd()}\\{path}"
+            image_path = path.abspath(path.join(settings.path_name,icon_path))
             # Open the image
             original_image = Image.open(image_path)
             # Resize the image to fit the button

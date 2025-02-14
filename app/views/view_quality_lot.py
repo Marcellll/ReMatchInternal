@@ -5,6 +5,8 @@ from PIL import Image
 import customtkinter as ctk
 from app.controller.controller_quality_lot import ControllerLot
 from app.views.view_quality_lot_creation import NouveauLot
+from os import path
+import utils.settings as settings
 
 class Lot:
     def __init__(self, parent_frame):
@@ -22,9 +24,9 @@ class Lot:
         self.description.set(values[1])
         self.article.set(values[2])
     
-    def resize_image(self, path: str, image_width: int, image_height:int):
+    def resize_image(self, icon_path: str, image_width: int, image_height:int):
         try:
-            image_path = f"{os.getcwd()}\\{path}"
+            image_path = path.abspath(path.join(settings.path_name,icon_path))
             # Open the image
             original_image = Image.open(image_path)
             # Resize the image to fit the button

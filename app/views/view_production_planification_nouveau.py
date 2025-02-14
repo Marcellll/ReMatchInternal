@@ -4,12 +4,14 @@ from customtkinter import *
 from PIL import Image
 from app.views.view_calendrier import ViewCalendrier
 from app.controller.controller_planification import ControllerPlanification
+from os import path
+import utils.settings as settings
 
 class PlanificationLot:
 
-    def resize_image(self, path: str, image_width: int, image_height:int):
+    def resize_image(self, icon_path: str, image_width: int, image_height:int):
         try:
-            image_path = f"{os.getcwd()}\\{path}"
+            image_path = path.abspath(path.join(settings.path_name,icon_path))
             # Open the image
             original_image = Image.open(image_path)
             # Resize the image to fit the button
