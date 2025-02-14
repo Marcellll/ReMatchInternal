@@ -75,8 +75,6 @@ class Lot:
                             VALUES (%s, %s, %s, %s, %s)
 
                         """, (nouveau_lot.id_article, nouveau_lot.lot, nouveau_lot.date_modification, nouveau_lot.heure_modification, nouveau_lot.description))
-
-
         dbconnection.commit()
         cursor.close()
         dbconnection.close()
