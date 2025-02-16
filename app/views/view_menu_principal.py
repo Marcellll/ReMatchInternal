@@ -41,6 +41,10 @@ class MenuPrincipal(ctk.CTk):
         planificationButton = ctk.CTkButton(prodSubSection, text="Planification", height=100, width=200 ,
                                         command= lambda : controller.create_new_view(outer_frame, sidebar, MenuButton.PLANIFICATION))
         planificationButton.grid(row=0, column=0)
+        #Pesee sub section
+        planificationButton = ctk.CTkButton(prodSubSection, text="Pesee", height=100, width=200 ,
+                                        command= lambda : controller.create_new_view(outer_frame, sidebar, MenuButton.PESEE))
+        planificationButton.grid(row=1, column=0)
 
         #Quality Button
         qualityButton = ctk.CTkButton(sidebar, text="Qualité", height= 100, 

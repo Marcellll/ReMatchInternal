@@ -1,4 +1,4 @@
-from app.model.database_handler import return_dbconnection
+from database_handler import return_dbconnection
 from enum import Enum
 import datetime
 
@@ -117,7 +117,8 @@ class OrdreFabrication:
                                     OF."Status_OF",
                                     OF."Date_debut",
                                     OF."Date_fin",
-                                    L."Description"
+                                    L."Description",
+                                    OF."ID"
                             FROM public."Ordre_fabrication" as OF
                             LEFT JOIN public."Lot" L
                                 ON OF."ID_Lot" = L."ID"
@@ -152,4 +153,4 @@ class OrdreFabrication:
         return rows
         
 if __name__=="__main__":
-    print(OrdreFabrication.get_batch_to_work_on())
+    print(OrdreFabrication.get_open_ordre_fabrication())

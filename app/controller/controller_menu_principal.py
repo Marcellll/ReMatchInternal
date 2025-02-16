@@ -5,15 +5,17 @@ from app.views.view_quality import Quality
 from app.views.view_quality_lot import Lot
 from app.views.view_settings import Settings
 from app.views.view_nomenclature import Nomenclature
+from app.views.view_pesee import Pesee
 from enum import Enum
 
 class MenuButton(Enum):
     PRODUCTION = 1
     PLANIFICATION = 2
-    QUALITY = 3
-    LOT = 4
-    SETTINGS = 5
-    NOMENCLATURE = 6
+    PESEE = 3
+    QUALITY = 4
+    LOT = 5
+    SETTINGS = 6
+    NOMENCLATURE = 7
 
 
 class ControllerMenuPrincipal:
@@ -38,6 +40,8 @@ class ControllerMenuPrincipal:
                 Production(mainWidget)
             case MenuButton.PLANIFICATION:
                 Batch(mainWidget)
+            case MenuButton.PESEE:
+                Pesee(mainWidget)
             case MenuButton.QUALITY:
                 self.hide_show_widget(subMenu)
                 Quality(mainWidget)
