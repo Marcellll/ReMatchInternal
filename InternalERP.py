@@ -7,6 +7,7 @@ import customtkinter as ctk
 from os import path
 import utils.settings as settings
 
+
 if __name__ == "__main__":
     settings.global_init(path.dirname(__file__))
     logging.basicConfig(filename="logs.log", level=logging.INFO)

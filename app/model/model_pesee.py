@@ -49,11 +49,11 @@ class Pesee:
     def insert_new_pesee(id_ordre_fabrication:int, id_article:int, poids:int):
         dbconnection = return_dbconnection()
         cursor = dbconnection.cursor()
-        cursor.execute(""" INSERT INTO public."Pesee_production" 
-                            ("ID_ordre_fabrication", "ID_article", "Poids", "Date_creation", "Heure_creation", "Status")
-                            VALUES (%s, %s, %s, %s, %s, %s)
-                        """, (id_ordre_fabrication, id_article, poids, 
-                              datetime.datetime.now().strftime("%Y-%m-%d"), datetime.datetime.now().strftime("%H:%M:%S"), StatusPesee.CREE.value))
+        cursor.execute(f""" INSERT INTO public."Pesee_production" 
+                            ("ID_ordre_fabrication", "ID_article", "Poids", "Date_creation", "Heure_creation", "Status", "Numero_pesee")
+                            VALUES ({id_ordre_fabrication}, {id_article}, {poids}, '{datetime.datetime.now().strftime("%Y-%m-%d")}',
+                             '{datetime.datetime.now().strftime("%H:%M:%S")}', '{StatusPesee.CREE.value}', {Pesee.get_nouveau_numero_pesee()})
+                        """)
         dbconnection.commit()
         cursor.close()
         dbconnection.close()
@@ -76,6 +76,28 @@ class Pesee:
         maxvalue = cursor.fetchall()
         dbconnection.close()
         return maxvalue[0][0] + 1
+    
+    def get_last_pesee():
+        dbconnection = return_dbconnection()
+        cursor = dbconnection.cursor()
+        cursor.execute(f""" SELECT L."Lot", 
+                            A."Description_article", 
+                            P."Poids", 
+                            P."Numero_pesee", 
+                            P."Date_creation", 
+                            P."Heure_creation"
+                            FROM public."Pesee_production" P
+                            LEFT JOIN public."Ordre_fabrication" OF
+                            ON P."ID_ordre_fabrication" = OF."ID"
+                            left join public."Lot" L
+                            ON OF."ID_Lot" = L."ID"
+                            LEFT JOIN public."Article" A
+                            ON P."ID_article" = A."ID"
+                            ORDER BY P."Numero_pesee" DESC LIMIT 1
+                        """) 
+        rows = cursor.fetchall()
+        dbconnection.close()
+        return rows
 
 if __name__ == "__main__":
-    print(Pesee.get_nouveau_numero_pesee())
+    print(Pesee.get_last_pesee()[0][3])

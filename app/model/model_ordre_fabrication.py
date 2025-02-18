@@ -1,4 +1,4 @@
-from database_handler import return_dbconnection
+from app.model.database_handler import return_dbconnection
 from enum import Enum
 import datetime
 
@@ -108,6 +108,16 @@ class OrdreFabrication:
         rows = cursor.fetchall()
         dbconnection.close()
         return rows
+    
+    def get_ordre_fabrication(id_lot: int) -> int:
+        dbconnection = return_dbconnection()
+        cursor = dbconnection.cursor()
+        cursor.execute(f""" SELECT "ID" FROM public."Ordre_fabrication"
+                            WHERE "ID_Lot" = {id_lot}
+                        """)
+        rows = cursor.fetchall()
+        dbconnection.close()
+        return rows[0][0]
     
     def get_open_ordre_fabrication():
         dbconnection = return_dbconnection()

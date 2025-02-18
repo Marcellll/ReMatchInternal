@@ -7,6 +7,7 @@ from app.views.view_settings import Settings
 from app.views.view_nomenclature import Nomenclature
 from app.views.view_pesee import Pesee
 from enum import Enum
+from queue import Queue
 
 class MenuButton(Enum):
     PRODUCTION = 1
@@ -21,6 +22,7 @@ class MenuButton(Enum):
 class ControllerMenuPrincipal:
     def __init__(self, view):
         self.view = view
+        self.data_queue = Queue()
 
     def hide_show_widget(self, widget: tk.Frame):
         if widget.winfo_ismapped():
@@ -41,7 +43,7 @@ class ControllerMenuPrincipal:
             case MenuButton.PLANIFICATION:
                 Batch(mainWidget)
             case MenuButton.PESEE:
-                Pesee(mainWidget)
+                Pesee(mainWidget, self.data_queue)
             case MenuButton.QUALITY:
                 self.hide_show_widget(subMenu)
                 Quality(mainWidget)

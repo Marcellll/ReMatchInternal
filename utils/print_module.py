@@ -1,23 +1,27 @@
 from reportlab.lib.pagesizes import A5
 from reportlab.lib.units import mm
 from reportlab.lib import colors
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
 from reportlab.graphics.barcode import code128  # For barcode generation
 from win32 import win32api, win32print
-from model.model_pesee import Pesee
 import os
+from utils import settings
+import datetime
 
 
-def create_production_label():
-    # TODO: change this to be dynamic with the pesee model
-    data = {
-        "date_time": "06/02/2025 09:22",
-        "batch": "330110089",
-        "item": "RM Quartz Sand",
-        "weight": "750",
-        "code": "3301122740"
-    }
+
+def create_production_label(datetime: datetime.datetime, lot: int, article_description: str,
+                            poids: int, numero_pesee: int):
+
+    item_style = ParagraphStyle(
+        name="ItemStyle",
+        fontName="Helvetica-Bold",
+        fontSize=16,
+        leading=10,
+        wordWrap='LTR',
+        alignment=0
+    )
 
     # Define custom margins (e.g., 10 mm on all sides)
     left_margin = 20 * mm
@@ -26,10 +30,10 @@ def create_production_label():
     bottom_margin = 10 * mm
 
     # Path to the image
-    image_path = "static/logo_ReMatch.jpg"
+    image_path = os.path.abspath(os.path.join(settings.path_name,"static\\logo_ReMatch.jpg"))
 
     # Create a PDF file
-    pdf_filename = "static\\etiquette_production.pdf"
+    pdf_filename = os.path.abspath(os.path.join(settings.path_name,"static\\etiquette_production.pdf"))
     doc = SimpleDocTemplate(pdf_filename,
                             pagesize=A5,
                             leftMargin=left_margin,
@@ -47,7 +51,7 @@ def create_production_label():
     header_table_data = [
         [Paragraph("Re Match France SAS<br/>15 rue de Johannesbourg<br/>FR-67150 Erstein<br/>France", 
                 styles["Normal"]), Image(image_path, width=100, height=50)], 
-                ["",f"""Date/Time: \n {data['date_time']}"""]
+                ["",f"""Date/Time: \n {datetime}"""]
     ]
 
     # Define the table style for the header
@@ -67,15 +71,15 @@ def create_production_label():
 
     # Create a table for the remaining data
     table_data = [
-        ["Batch", data["batch"]],
-        ["Item", data["item"]],
-        ["Kg", data["weight"]],
+        ["Batch", lot],
+        ["Item", Paragraph(article_description, item_style)],
+        ["Kg", poids],
         ["", ""],
-        ["", data["code"]]
+        ["", numero_pesee]
     ]
 
     #Generate the barcode
-    barcode = code128.Code128(data["code"], barHeight=40, barWidth=2) 
+    barcode = code128.Code128(numero_pesee, barHeight=40, barWidth=2) 
     # Replace the "Barcode" row with the actual barcode
     table_data[3][1] = barcode
 
@@ -104,6 +108,7 @@ def create_production_label():
 
     # Build the PDF
     doc.build(content)
+    print_label(filename=pdf_filename)
 
 def print_label(filename):
     #TODO: be sure to select the default printer
@@ -112,4 +117,3 @@ def print_label(filename):
 
 if __name__ =="__main__":
     create_production_label()
-    print_label(f"{os.path.abspath(os.curdir)}/static/etiquette_production.pdf")
