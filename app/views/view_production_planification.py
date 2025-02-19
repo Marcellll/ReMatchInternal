@@ -124,7 +124,8 @@ class Batch:
                                                   command= lambda: [self.plan_lot(lot=self.lot.get(), status=self.status, 
                                                                                   date_debut=self.date_debut.get(), date_fin=self.date_fin.get()),
                                                                     ControllerPlanification.populate_ordre_to_be_worked_on(treeview=frame2_treeview),
-                                                                    ControllerPlanification.populate_all_ordre_to_work_on(treeview=frame3_treeview)])
+                                                                    ControllerPlanification.populate_all_ordre_to_work_on(treeview=frame3_treeview),
+                                                                    self.clear_information_panel()])
 
         self.frame1_adding_button.grid(row=0, column=3)
         #Terminer un lot

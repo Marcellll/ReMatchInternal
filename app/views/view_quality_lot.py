@@ -23,6 +23,11 @@ class Lot:
         self.lot.set(values[0])
         self.description.set(values[1])
         self.article.set(values[2])
+
+    def clear_inputs(self):
+        self.description.set("")
+        self.lot.set("")
+        self.article.set("")
     
     def resize_image(self, icon_path: str, image_width: int, image_height:int):
         try:
@@ -98,7 +103,8 @@ class Lot:
                                                   command= lambda: [ControllerLot.save_lot(lot=self.lot.get(), 
                                                                                           article=self.article.get(),
                                                                                           update_description=self.description.get()),
-                                                                    ControllerLot.populate_all_lot(self.frame2_treeview)]                                                  
+                                                                    ControllerLot.populate_all_lot(self.frame2_treeview),
+                                                                    self.clear_inputs()]                                                  
                                                   )
         self.frame1_save_OF.grid(row=2, column=2)
 

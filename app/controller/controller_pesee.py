@@ -49,11 +49,16 @@ class ControllerPesee:
             s.connect((scale_ip, 9761)) 
             while True:
                 data = s.recv(1024).decode('utf-8').strip().split()
+                try:
+                    weight_data = int(float(data[0]))
+                except Exception as e:
+                    weight_data = 0
+                    continue
                 if len(data) > 2 and data[2] == '?':
-                    self.data_queue.put((scale_name, int(float(data[0])), "Unstable"))
+                    self.data_queue.put((scale_name, weight_data, "Unstable"))
                     #print(self.data_queue.get())
                 else:
-                    self.data_queue.put((scale_name, int(float(data[0])), "Stable"))
+                    self.data_queue.put((scale_name, weight_data, "Stable"))
                     #print(self.data_queue.get())
                 time.sleep(0.5)
 
@@ -78,7 +83,7 @@ class ControllerPesee:
             MessageErreur("Balance instable attendez quelques instants")
             return
         if lot == "" or article == "" or poids == 0:
-            MessageErreur("Lot, article ou poids pas renseigné")
+            MessageErreur("Lot, article ou poids non renseigné")
             return
         Pesee.insert_new_pesee(OrdreFabrication.get_ordre_fabrication(id_lot = Lot.get_id_from_lot(lot)[0][0]),
                                Article.get_id_article_from_description(article),

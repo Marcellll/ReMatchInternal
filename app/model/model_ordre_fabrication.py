@@ -156,7 +156,7 @@ class OrdreFabrication:
                             LEFT JOIN public."Article" A
                             ON L."ID_Article" = A."ID"
                             WHERE OF."Status_OF" <> '{StatusOF.PLANIFIE.value}'
-                            ORDER BY L."Lot" DESC
+                            ORDER BY OF."Status_OF" ASC, OF."Date_debut" ASC
                         """)
         rows = cursor.fetchall()
         dbconnection.close()
