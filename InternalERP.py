@@ -15,5 +15,5 @@ if __name__ == "__main__":
     #updater.check_for_update()
     ctk.set_default_color_theme(path.abspath(path.join(settings.path_name, 'static\\rematch_theme.json')))                          
     ctk.set_appearance_mode("dark")
-    root = MenuPrincipal()
+    root = MenuPrincipal(settings.version)
     root.mainloop()

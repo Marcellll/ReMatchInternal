@@ -6,9 +6,9 @@ from app.views.view_production import Production
 import customtkinter as ctk
 
 class MenuPrincipal(ctk.CTk):
-    def __init__(self):
+    def __init__(self, version: str):
         super().__init__()
-        self.title("Re-Match ERP")
+        self.title(f"Re-Match ERP - {version}")
         self.geometry(f"{self.winfo_screenwidth()}x{self.winfo_screenheight()}")
         self.state("withdrawn")
         controller = ControllerMenuPrincipal(self)
