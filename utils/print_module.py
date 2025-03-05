@@ -111,11 +111,17 @@ def create_production_label(datetime: datetime.datetime, lot: int, article_descr
 
 def print_label(filename):
     #TODO: be sure to select the default printer
-    win32print.SetDefaultPrinter("Brother HL-L2445DW Printer")
+    win32print.SetDefaultPrinter("Brother HL-L2445DW")
     win32api.ShellExecute(0, "print", filename, None, ".", False) #Print based on the default printer 
 
 if __name__ =="__main__":
     pass
+    #printers = win32print.EnumPrinters(win32print.PRINTER_ENUM_LOCAL, None, 1)
+    #for itrems in printers:
+    #    print(itrems)
+    #print(win32print.GetDefaultPrinter())
+    #print(win32print.GetDefaultPrinterW())
+    #win32api.ShellExecute(0, "print", ".\\static\\etiquette_production.pdf", None, ".", False)
     #settings.global_init("C:\\Users\\MarcelBeyer\\Marcel\\Programmes\\RematchInternal\\")
     #list_items = [
     #    [330110276,3301116431,1020,"RUBBER MIX 0.8 - 2.5 MM"],

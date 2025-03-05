@@ -6,6 +6,7 @@ from app.controller.controller_planification import ControllerPlanification
 from app.views.view_calendrier import ViewCalendrier
 from app.views.view_message_erreur import MessageErreur
 from app.views.view_production_planification_nouveau import PlanificationLot
+from app.views.view_production_planification_article import PlanificationArticle
 from PIL import Image
 from os import path
 import utils.settings as settings
@@ -53,6 +54,12 @@ class Batch:
             return
 
         PlanificationLot(lot=lot,date_debut=date_debut, date_fin=date_fin)
+
+    def modification_article_lot(self, lot: str):
+        if lot == '':
+            MessageErreur(f"Double cliquez sur une ligne de lot pour modifier les articles")
+            return
+        PlanificationArticle(lot=lot)
     
     def clear_information_panel(self):
         self.description.set("")
@@ -128,6 +135,13 @@ class Batch:
                                                                     self.clear_information_panel()])
 
         self.frame1_adding_button.grid(row=0, column=3)
+        #Modification article sur le lot
+        self.frame1_adding_button = ctk.CTkButton(self.frame1, text ="Article", 
+                                                  width=button_width, height=button_height, 
+                                                  image=self.resize_image("static\\article.png", button_width, button_height),
+                                                  command= lambda: [self.modification_article_lot(lot=self.lot.get())])
+
+        self.frame1_adding_button.grid(row=1, column=3)
         #Terminer un lot
         self.frame1_refresh_button = ctk.CTkButton(self.frame1, text ="Terminer lot", 
                                                   width=button_width, height=button_height, 
@@ -137,7 +151,7 @@ class Batch:
                                                                     ControllerPlanification.populate_ordre_to_be_worked_on(treeview=frame2_treeview),
                                                                     ControllerPlanification.populate_all_ordre_to_work_on(treeview=frame3_treeview)])
 
-        self.frame1_refresh_button.grid(row=1, column=3)
+        self.frame1_refresh_button.grid(row=2, column=3)
         #Sauvegarder changement de date
         self.frame1_save_button = ctk.CTkButton(self.frame1, text ="Enregistrer", 
                                                   width=button_width, height=button_height, 
@@ -148,7 +162,7 @@ class Batch:
                                                                     ControllerPlanification.populate_ordre_to_be_worked_on(treeview=frame2_treeview),
                                                                     ControllerPlanification.populate_all_ordre_to_work_on(treeview=frame3_treeview)])
 
-        self.frame1_save_button.grid(row=2, column=3)
+        self.frame1_save_button.grid(row=3, column=3)
         #Rafraîchir les listes
         self.frame1_refresh_button = ctk.CTkButton(self.frame1, text ="Rafraîchir", 
                                                   width=button_width, height=button_height, 
@@ -157,7 +171,7 @@ class Batch:
                                                                     ControllerPlanification.populate_ordre_to_be_worked_on(treeview=frame2_treeview),
                                                                     ControllerPlanification.populate_all_ordre_to_work_on(treeview=frame3_treeview)])
 
-        self.frame1_refresh_button.grid(row=3, column=3)
+        self.frame1_refresh_button.grid(row=4, column=3)
 
 
         # Verything that goes into second frame

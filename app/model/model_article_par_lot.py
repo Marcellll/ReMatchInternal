@@ -47,7 +47,7 @@ class ArticleParLot:
     def get_article_par_lot(id_lot: int):
         dbconnection = return_dbconnection()
         cursor = dbconnection.cursor()
-        cursor.execute(f""" SELECT A."Description_article" 
+        cursor.execute(f""" SELECT A."Numero_article", A."Description_article" 
                             FROM public."Article_par_lot" APL
                             LEFT JOIN public."Article" A
                             ON APL."ID_Article" = A."ID"

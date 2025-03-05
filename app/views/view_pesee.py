@@ -74,25 +74,25 @@ class Pesee(tk.Frame):
         self.frame1.grid(row=0, column=0, sticky="nwse", padx=2, pady=2)
 
         # Everything that goes into the first frame
-        frame1_info_label = tk.Label(self.frame1, text="Nouvelle Pesee", padx=1, pady=1)
+        frame1_info_label = ctk.CTkLabel(self.frame1, text="Nouvelle Pesee", padx=1, pady=1)
         frame1_info_label.grid(row=0, column=0)
 
 
         #Lot
         frame1_lot_label = ctk.CTkLabel(self.frame1, text="Lot :",  padx=1, pady=1)
         frame1_lot_label.grid(row=1,column=0, sticky="w")
-        frame1_lot_entry = ctk.CTkComboBox(self.frame1, width= 250, variable=self.lot, 
+        frame1_lot_entry = ctk.CTkComboBox(self.frame1, width= 350, height=100, variable=self.lot, 
                                            values=[str(sublist[0]) for sublist in liste_ordre_fabrication])
         frame1_lot_entry.grid(row=1,column=1, sticky="w")
         #Article
         frame1_article_label = ctk.CTkLabel(self.frame1, text="Article :",  padx=1, pady=1)
         frame1_article_label.grid(row=2,column=0, sticky="w")
-        self.frame1_article_entry = ctk.CTkComboBox(self.frame1, width= 250, variable=self.article)
+        self.frame1_article_entry = ctk.CTkComboBox(self.frame1, width= 350, height=100, variable=self.article)
         self.frame1_article_entry.grid(row=2,column=1, sticky="w")
         #Balance
         frame1_balance_label = ctk.CTkLabel(self.frame1, text="Balance :",  padx=1, pady=1)
         frame1_balance_label.grid(row=3,column=0, sticky="w")
-        frame1_balance_entry = ctk.CTkComboBox(self.frame1, width= 250, variable=self.balance,
+        frame1_balance_entry = ctk.CTkComboBox(self.frame1, width= 350, height=100, variable=self.balance,
                                                values=liste_balance)
         frame1_balance_entry.grid(row=3, column=1, sticky='w')
         #Poids
@@ -105,7 +105,7 @@ class Pesee(tk.Frame):
         frame1_connection = ctk.CTkLabel(self.frame1, textvariable=self.connection, padx=1, pady=1)
         frame1_connection.grid(row=4, column=3)
         #Button Valider la pesée
-        frame1_pesee_button = ctk.CTkButton(self.frame1, text="Valider pesée", width=150,
+        frame1_pesee_button = ctk.CTkButton(self.frame1, text="Valider pesée", width=250, height=200,
                                             command=lambda : [self.controller.save_pesee(self.lot.get(),
                                                                                         self.article.get(),
                                                                                         self.poids.get(),

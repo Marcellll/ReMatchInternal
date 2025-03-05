@@ -46,13 +46,27 @@ class MenuPrincipal(ctk.CTk):
                                         command= lambda : controller.create_new_view(outer_frame, sidebar, MenuButton.PESEE))
         planificationButton.grid(row=1, column=0)
 
+        #Logistics Button
+        logisticsButton = ctk.CTkButton(sidebar, text="Logistique", height= 100, 
+                                   command= lambda : controller.create_new_view(outer_frame, sidebar, MenuButton.LOGISTIQUE, logisticsSubSection))
+        logisticsButton.grid(row=2, column=0, sticky='ew')
+        logisticsSubSection = ctk.CTkFrame(sidebar)    
+        #Sub section for Logistics to encapsulate the sub menu buttons
+        logisticsSubSection.grid(row=3, column=0, sticky='ew')
+        logisticsSubSection.columnconfigure(0, weight=1)
+        logisticsSubSection.grid_remove()
+        #Pesee sub section
+        camionButton = ctk.CTkButton(logisticsSubSection, text="Camion", height=100, width=200 ,
+                                        command= lambda : controller.create_new_view(outer_frame, sidebar, MenuButton.CAMION))
+        camionButton.grid(row=0, column=0)
+
         #Quality Button
         qualityButton = ctk.CTkButton(sidebar, text="Qualité", height= 100, 
                                      command= lambda : controller.create_new_view(outer_frame, sidebar, MenuButton.QUALITY, qualitySubSection))
-        qualityButton.grid(row=2, column=0, sticky='ew')
+        qualityButton.grid(row=4, column=0, sticky='ew')
         #Sub section for Quality to encapsulate the sub menu buttons
         qualitySubSection = ctk.CTkFrame(sidebar) 
-        qualitySubSection.grid(row=3, column=0, sticky='ew')
+        qualitySubSection.grid(row=5, column=0, sticky='ew')
         qualitySubSection.columnconfigure(0, weight=1)
         qualitySubSection.grid_remove()
         #Batch sub section
@@ -63,10 +77,10 @@ class MenuPrincipal(ctk.CTk):
         #Settings button
         settingsButton = ctk.CTkButton(sidebar, text="Paramètres", height= 100, 
                                      command= lambda : controller.create_new_view(outer_frame, sidebar, MenuButton.SETTINGS, settingsSubSection))
-        settingsButton.grid(row=4, column=0, sticky='ew')
+        settingsButton.grid(row=6, column=0, sticky='ew')
         #Sub section for Settings to encapsulate the sub menu buttons
         settingsSubSection = ctk.CTkFrame(sidebar) 
-        settingsSubSection.grid(row=5, column=0, sticky='ew')
+        settingsSubSection.grid(row=7, column=0, sticky='ew')
         settingsSubSection.columnconfigure(0, weight=1)
         settingsSubSection.grid_remove()
         #Batch sub section

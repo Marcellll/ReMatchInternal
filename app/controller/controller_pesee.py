@@ -68,6 +68,7 @@ class ControllerPesee:
     def get_article_par_lot(numero_lot):
         if numero_lot == "" or numero_lot == None:
             MessageErreur("Choissisez un lot pour choisir un article")
+            return
         id_lot = Lot.get_id_from_lot(numero_lot)[0][0]
         return ArticleParLot.get_article_par_lot(id_lot)
     

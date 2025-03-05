@@ -40,6 +40,13 @@ class Lot:
             return ctk.CTkImage(resized_image, resized_image)
         except Exception as e:
             print(f"Error loading or resizing image: {e}")
+
+    def sort_treeview(tree, col, descending):
+        data = [(tree.set(item, col), item) for item in tree.get_children('')]
+        data.sort(reverse=descending)
+        for index, (val, item) in enumerate(data):
+            tree.move(item, '', index)
+        tree.heading(col, command=lambda: Lot.sort_treeview(tree, col, not descending))
         
     def create_widgets(self):
         """
@@ -145,13 +152,13 @@ class Lot:
         self.frame2_treeview.column("Heure_modif", width=20, stretch=True)
         self.frame2_treeview.column("Status_OF", width=20, stretch=True)
         self.frame2_treeview.column("Reception", width=20, stretch=True)
-        self.frame2_treeview.heading("Lot", text="Lot", anchor='center')
-        self.frame2_treeview.heading("Description", text="Description", anchor='center')
-        self.frame2_treeview.heading("Article", text="Article", anchor='center')
-        self.frame2_treeview.heading("Date_modif", text="Date dernière modification", anchor='center')
-        self.frame2_treeview.heading("Heure_modif", text="Heure dernière modification", anchor='center')
-        self.frame2_treeview.heading("Status_OF", text="Status OF", anchor='center')
-        self.frame2_treeview.heading("Reception", text="Réception", anchor='center')
+        self.frame2_treeview.heading("Lot", text="Lot", anchor='center', command= lambda c="Lot": Lot.sort_treeview(self.frame2_treeview, c, False))
+        self.frame2_treeview.heading("Description", text="Description", anchor='center', command= lambda c="Description": Lot.sort_treeview(self.frame2_treeview, c, False))
+        self.frame2_treeview.heading("Article", text="Article", anchor='center', command= lambda c="Article": Lot.sort_treeview(self.frame2_treeview, c, False))
+        self.frame2_treeview.heading("Date_modif", text="Date dernière modification", anchor='center', command= lambda c="Date_modif": Lot.sort_treeview(self.frame2_treeview, c, False))
+        self.frame2_treeview.heading("Heure_modif", text="Heure dernière modification", anchor='center', command= lambda c="Heure_modif": Lot.sort_treeview(self.frame2_treeview, c, False))
+        self.frame2_treeview.heading("Status_OF", text="Status OF", anchor='center', command= lambda c="Status_OF": Lot.sort_treeview(self.frame2_treeview, c, False))
+        self.frame2_treeview.heading("Reception", text="Réception", anchor='center', command= lambda c="Reception": Lot.sort_treeview(self.frame2_treeview, c, False))
         self.frame2_treeview.pack(fill='both', expand= True)
 
         self.frame21_scrollbar.config(command=self.frame2_treeview.yview)
