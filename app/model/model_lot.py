@@ -45,12 +45,15 @@ class Lot:
                                   L."Description",
                                   L."Date_modification",
                                   L."Heure_modification",
-                                  OF."Status_OF"
+                                  OF."Status_OF",
+                                  C."Numero_chargement"
                             FROM public."Lot" L
                             LEFT JOIN public."Article" A
                             ON L."ID_Article" = A."ID"
                             LEFT JOIN public."Ordre_fabrication" OF
                             ON L."ID" = OF."ID_Lot"
+                            LEFT JOIN public."Chargement" C
+                            ON L."ID" = C."ID_Lot"
                             ORDER BY L."Lot" DESC
                         """)
         rows = cursor.fetchall()

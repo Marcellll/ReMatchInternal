@@ -1,4 +1,5 @@
 from app.views.view_menu_principal import MenuPrincipal
+from reportlab.graphics.barcode import code93, code39, usps, usps4s, ecc200datamatrix
 import logging
 import tkinter as tk
 from datetime import datetime

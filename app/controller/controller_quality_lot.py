@@ -6,6 +6,7 @@ from app.model.model_ordre_fabrication import OrdreFabrication
 from app.views.view_message_erreur import MessageErreur
 from app.model.model_article_par_lot import ArticleParLot
 from app.model.model_nomenclature import Nomenclature
+from app.model.model_chargement import Chargement, ChargementDechargement
 import datetime
 
 class ControllerLot:
@@ -17,7 +18,8 @@ class ControllerLot:
         treeview.delete(*treeview.get_children())   
         for lot in all_lot:
             status = "Non crée" if lot[6] == None else lot[6]
-            new_line = [lot[0], lot[3], lot[2], lot[4], lot[5], status]
+            reception = "Non crée" if lot[7] == 0 else lot[7]
+            new_line = [lot[0], lot[3], lot[2], lot[4], lot[5], status, reception]
             treeview.insert("", "end", values=new_line, tags=(f"{status}"))
     
     def get_front_end_article():
@@ -53,6 +55,26 @@ class ControllerLot:
             id_nomenclature = Article.get_id_article_from_description(row[3])
             ArticleParLot.insert_new_article_par_lot(id_lot=id_lot, id_article=id_nomenclature)
         OrdreFabrication.insert_new_ordre_fabrication(id_nouveau_lot=id_lot)
+
+    def create_new_chargement(lot: int, article: str):
+        if lot == '':
+            MessageErreur(f"Double cliquez sur une ligne de lot pour créer la réception")
+            return
+        
+        if article == 'None':
+            MessageErreur("Attribuez un article au lot avant de créer la réception")
+            return
+        
+        id_lot = Lot.get_id_from_lot(lot)[0][0]
+        numero_chargement = Chargement.get_last_chargement() + 1
+
+        if Chargement.is_chargement_present(id_lot):
+            MessageErreur(f"La réception existe déjà pour le lot: {lot}")
+            return
+        
+        new_chargement = Chargement(id_lot=id_lot, numero_chargement=numero_chargement, 
+                                    chargement_dechargement=ChargementDechargement.Dechargement.value)
+        Chargement.insert_new_chargement(new_chargement)
     
     def save_lot(lot: int, article: str, update_description: str):
         id_update_article = Article.get_id_article_from_description(article)

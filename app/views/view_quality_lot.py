@@ -86,15 +86,23 @@ class Lot:
 
         self.frame1_adding_button.grid(row=0, column=2)
 
+        #Converting a batch to an incoming reception
+        self.frame1_create_OF = ctk.CTkButton(self.frame1, text ="Créer Réception", 
+                                                  width=button_width, height=button_height, 
+                                                  image=self.resize_image("static\\camion.png", button_width, button_height),
+                                                  command= lambda: [ControllerLot.create_new_chargement(lot=self.lot.get(), article=self.article.get()),
+                                                                    ControllerLot.populate_all_lot(self.frame2_treeview)]
+                                                  )
+        self.frame1_create_OF.grid(row=1, column=2)
+
         #Converting a batch to an OF
         self.frame1_create_OF = ctk.CTkButton(self.frame1, text ="Créer OF", 
                                                   width=button_width, height=button_height, 
                                                   image=self.resize_image("static\\engrenage.png", button_width, button_height),
-
                                                   command= lambda: [ControllerLot.create_new_OF(lot=self.lot.get(), article=self.article.get()),
                                                                     ControllerLot.populate_all_lot(self.frame2_treeview)]
                                                   )
-        self.frame1_create_OF.grid(row=1, column=2)
+        self.frame1_create_OF.grid(row=2, column=2)
 
         #Saving changes to a batch
         self.frame1_save_OF = ctk.CTkButton(self.frame1, text ="Sauvegarder lot", 
@@ -106,7 +114,7 @@ class Lot:
                                                                     ControllerLot.populate_all_lot(self.frame2_treeview),
                                                                     self.clear_inputs()]                                                  
                                                   )
-        self.frame1_save_OF.grid(row=2, column=2)
+        self.frame1_save_OF.grid(row=3, column=2)
 
 
         # Everything that goes into second frame with the treeview
@@ -121,7 +129,7 @@ class Lot:
         treeview_style.configure("treeview_style.Treeview", font=('Verdana', 16), rowheight=45)
         treeview_style.configure("treeview_style.Treeview.Heading", font=('Verdana', 20, 'bold'), padding=5)
         # Define tags and their styles
-        treeview_columns =('Lot', 'Description', 'Article', 'Date_modif', 'Heure_modif', 'Status_OF')
+        treeview_columns =('Lot', 'Description', 'Article', 'Date_modif', 'Heure_modif', 'Status_OF', 'Reception')
         self.frame2_treeview = ttk.Treeview(self.frame21, columns=treeview_columns, show='headings', 
                                             yscrollcommand=self.frame21_scrollbar.set,
                                             style="treeview_style.Treeview")
@@ -136,12 +144,14 @@ class Lot:
         self.frame2_treeview.column("Date_modif", width=20, stretch=True)
         self.frame2_treeview.column("Heure_modif", width=20, stretch=True)
         self.frame2_treeview.column("Status_OF", width=20, stretch=True)
+        self.frame2_treeview.column("Reception", width=20, stretch=True)
         self.frame2_treeview.heading("Lot", text="Lot", anchor='center')
         self.frame2_treeview.heading("Description", text="Description", anchor='center')
         self.frame2_treeview.heading("Article", text="Article", anchor='center')
         self.frame2_treeview.heading("Date_modif", text="Date dernière modification", anchor='center')
         self.frame2_treeview.heading("Heure_modif", text="Heure dernière modification", anchor='center')
-        self.frame2_treeview.heading("Status_OF", text="Status Ordre de fabrication", anchor='center')
+        self.frame2_treeview.heading("Status_OF", text="Status OF", anchor='center')
+        self.frame2_treeview.heading("Reception", text="Réception", anchor='center')
         self.frame2_treeview.pack(fill='both', expand= True)
 
         self.frame21_scrollbar.config(command=self.frame2_treeview.yview)

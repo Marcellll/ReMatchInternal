@@ -8,8 +8,7 @@ from win32 import win32api, win32print
 import os
 from utils import settings
 import datetime
-
-
+from time import sleep
 
 def create_production_label(datetime: datetime.datetime, lot: int, article_description: str,
                             poids: int, numero_pesee: int):
@@ -112,8 +111,18 @@ def create_production_label(datetime: datetime.datetime, lot: int, article_descr
 
 def print_label(filename):
     #TODO: be sure to select the default printer
-    #win32print.SetDefaultPrinter(default_printer)
+    win32print.SetDefaultPrinter("Brother HL-L2445DW Printer")
     win32api.ShellExecute(0, "print", filename, None, ".", False) #Print based on the default printer 
 
 if __name__ =="__main__":
-    create_production_label()
+    pass
+    #settings.global_init("C:\\Users\\MarcelBeyer\\Marcel\\Programmes\\RematchInternal\\")
+    #list_items = [
+    #    [330110276,3301116431,1020,"RUBBER MIX 0.8 - 2.5 MM"],
+    #    [990110478,3301121317,1009,"RUBBER MIX 0.8 - 2.0 MM"]
+    #]
+
+    #for items in list_items:
+    #    create_production_label(datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+    #                            items[0], items[3], items[2], items[1])
+    #    sleep(15)   
