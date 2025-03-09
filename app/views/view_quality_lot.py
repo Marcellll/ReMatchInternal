@@ -5,6 +5,7 @@ from PIL import Image
 import customtkinter as ctk
 from app.controller.controller_quality_lot import ControllerLot
 from app.views.view_quality_lot_creation import NouveauLot
+from app.views.view_quality_lot_reception import NouvelleReception
 from os import path
 import utils.settings as settings
 
@@ -97,7 +98,7 @@ class Lot:
         self.frame1_create_OF = ctk.CTkButton(self.frame1, text ="Créer Réception", 
                                                   width=button_width, height=button_height, 
                                                   image=self.resize_image("static\\camion.png", button_width, button_height),
-                                                  command= lambda: [ControllerLot.create_new_chargement(lot=self.lot.get(), article=self.article.get()),
+                                                  command= lambda: [NouvelleReception(lot=self.lot.get()),
                                                                     ControllerLot.populate_all_lot(self.frame2_treeview)]
                                                   )
         self.frame1_create_OF.grid(row=1, column=2)

@@ -4,7 +4,11 @@ from enum import Enum
 
 class ChargementDechargement(Enum):
     Chargement = "Chargement"
-    Dechargement = "Dechargement" 
+    Dechargement = "Dechargement"
+
+class ChargementStatus(Enum):
+    OUVERT = "Ouvert"
+    TERMINE = "Terminé"
 
 class Chargement:
     """
@@ -23,9 +27,10 @@ class Chargement:
                  date_fin: datetime.date = None,
                  id_lot: int = None,
                  numero_chargement: int = None,
-                 chargement_dechargement: ChargementDechargement = ChargementDechargement.Chargement.value,
+                 chargement_dechargement: ChargementDechargement = ChargementDechargement.Chargement,
                  client: str = "",
                  adresse_livraison: str = "",
+                 status: ChargementStatus = ChargementStatus.OUVERT,
                 ):
         """
         Initialize a new Lot instance.
@@ -43,18 +48,20 @@ class Chargement:
         self.chargement_dechargement = chargement_dechargement
         self.client = client
         self.adresse_livraison = adresse_livraison
+        self.status = status
 
     def insert_new_chargement(nouveau_chargement: 'Chargement'):
         dbconnection = return_dbconnection()
         cursor = dbconnection.cursor()
         cursor.execute(""" INSERT INTO public."Chargement" 
-                            ("Date_debut", "Date_fin", "ID_Lot", "Numero_chargement", "Chargement/Dechargement", "Client", "Adresse livraison")
-                            VALUES (%s, %s, %s, %s, %s, %s, %s)
+                            ("Date_debut", "Date_fin", "ID_Lot", "Numero_chargement", "Chargement/Dechargement", "Client", "Adresse livraison", "Status")
+                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
 
                         """, (nouveau_chargement.date_debut, nouveau_chargement.date_fin,
                               nouveau_chargement.id_lot, nouveau_chargement.numero_chargement,
-                              nouveau_chargement.chargement_dechargement, nouveau_chargement.client,
-                              nouveau_chargement.adresse_livraison))
+                              nouveau_chargement.chargement_dechargement.value, nouveau_chargement.client,
+                              nouveau_chargement.adresse_livraison,
+                              nouveau_chargement.status.value))
         dbconnection.commit()
         cursor.close()
         dbconnection.close()
@@ -83,7 +90,33 @@ class Chargement:
         else:
             dbconnection.close()
             return False
+        
+    def get_all_open_chargement():
+        dbconnection = return_dbconnection()
+        cursor = dbconnection.cursor()
+        cursor.execute(f"""SELECT C."Numero_chargement", 
+                                  C."Date_debut", 
+                                  C."Date_fin", 
+                                  C."Chargement/Dechargement",
+                                  L."Lot"
+                            FROM public."Chargement" C
+                            LEFT JOIN public."Lot" L
+                            ON C."ID_Lot" = L."ID"
+                            WHERE C."Status" = '{ChargementStatus.OUVERT.value}'
+                        """)
+        rows = cursor.fetchall()
+        dbconnection.close()
+        return rows
     
+    def get_id_from_numero(numero_chargement: int) -> int:
+        dbconnection = return_dbconnection()
+        cursor = dbconnection.cursor()
+        cursor.execute(f""" SELECT C."ID" FROM public."Chargement" C
+                           WHERE C."Numero_chargement" = {numero_chargement}
+                        """)
+        rows = cursor.fetchall()
+        dbconnection.close()
+        return rows[0][0]
 
 if __name__ == "__main__":
-    print(Chargement.is_chargement_present(500))
+    print(Chargement.get_id_from_numero(3003))

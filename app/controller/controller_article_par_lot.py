@@ -25,5 +25,9 @@ class ControllerArticleParLot:
     def add_article(lot: str, article_to_add: str):
         id_lot = Lot.get_id_from_lot(lot)[0][0]
         id_article_to_add = Article.get_id_article_from_description(article_to_add)
+        for article in ArticleParLot.get_article_par_lot(id_lot):
+            if article[1] == article_to_add:
+                MessageErreur(f"L'article {article_to_add} est déjà dans la liste")
+                return
 
         ArticleParLot.insert_new_article_par_lot(id_lot, id_article_to_add)

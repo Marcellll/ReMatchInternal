@@ -47,7 +47,7 @@ class Pesee(tk.Frame):
 
     def update_article_values(self, var, index, mode):
         liste_article = ControllerPesee.get_article_par_lot(self.lot.get())
-        self.frame1_article_entry.configure(values=[str(sublist[0]) for sublist in liste_article])
+        self.frame1_article_entry.configure(values=[str(sublist[1]) for sublist in liste_article])
 
     def clear_input(self):
         self.lot.trace_remove(['write'], self.trace_id)
