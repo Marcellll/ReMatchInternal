@@ -1,12 +1,10 @@
 import os
 import tkinter as tk
 from tkinter import ttk
-from PIL import Image
 import customtkinter as ctk
 from app.controller.controller_quality_lot import ControllerLot
 from app.views.view_quality_lot_creation import NouveauLot
 from app.views.view_quality_lot_reception import NouvelleReception
-from os import path
 import utils.settings as settings
 
 class Lot:
@@ -29,18 +27,6 @@ class Lot:
         self.description.set("")
         self.lot.set("")
         self.article.set("")
-    
-    def resize_image(self, icon_path: str, image_width: int, image_height:int):
-        try:
-            image_path = path.abspath(path.join(settings.path_name,icon_path))
-            # Open the image
-            original_image = Image.open(image_path)
-            # Resize the image to fit the button
-            resized_image = original_image.resize((image_width, image_height))
-            # Convert the resized image to a Tkinter-compatible format
-            return ctk.CTkImage(resized_image, resized_image)
-        except Exception as e:
-            print(f"Error loading or resizing image: {e}")
 
     def sort_treeview(tree, col, descending):
         data = [(tree.set(item, col), item) for item in tree.get_children('')]
@@ -87,7 +73,7 @@ class Lot:
         button_height = 50
         self.frame1_adding_button = ctk.CTkButton(self.frame1, text ="Nouveau lot", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\plus.png", button_width, button_height),
+                                                  image=settings.resize_image("static\\plus.png", button_width, button_height),
 
                                                   command= lambda: [NouveauLot(),
                                                                     ControllerLot.populate_all_lot(self.frame2_treeview)])
@@ -97,7 +83,7 @@ class Lot:
         #Converting a batch to an incoming reception
         self.frame1_create_OF = ctk.CTkButton(self.frame1, text ="Créer Réception", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\camion.png", button_width, button_height),
+                                                  image=settings.resize_image("static\\camion.png", button_width, button_height),
                                                   command= lambda: [NouvelleReception(lot=self.lot.get()),
                                                                     ControllerLot.populate_all_lot(self.frame2_treeview)]
                                                   )
@@ -106,7 +92,7 @@ class Lot:
         #Converting a batch to an OF
         self.frame1_create_OF = ctk.CTkButton(self.frame1, text ="Créer OF", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\engrenage.png", button_width, button_height),
+                                                  image=settings.resize_image("static\\engrenage.png", button_width, button_height),
                                                   command= lambda: [ControllerLot.create_new_OF(lot=self.lot.get(), article=self.article.get()),
                                                                     ControllerLot.populate_all_lot(self.frame2_treeview)]
                                                   )
@@ -115,7 +101,7 @@ class Lot:
         #Saving changes to a batch
         self.frame1_save_OF = ctk.CTkButton(self.frame1, text ="Sauvegarder lot", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\sauvegarder.png", button_width, button_height),
+                                                  image=settings.resize_image("static\\sauvegarder.png", button_width, button_height),
                                                   command= lambda: [ControllerLot.save_lot(lot=self.lot.get(), 
                                                                                           article=self.article.get(),
                                                                                           update_description=self.description.get()),

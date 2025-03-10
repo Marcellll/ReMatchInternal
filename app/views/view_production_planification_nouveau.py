@@ -1,25 +1,10 @@
 import tkinter as tk
-from tkinter import ttk
 from customtkinter import *
-from PIL import Image
 from app.views.view_calendrier import ViewCalendrier
 from app.controller.controller_planification import ControllerPlanification
-from os import path
 import utils.settings as settings
 
 class PlanificationLot:
-
-    def resize_image(self, icon_path: str, image_width: int, image_height:int):
-        try:
-            image_path = path.abspath(path.join(settings.path_name,icon_path))
-            # Open the image
-            original_image = Image.open(image_path)
-            # Resize the image to fit the button
-            resized_image = original_image.resize((image_width, image_height))
-            # Convert the resized image to a Tkinter-compatible format
-            return CTkImage(resized_image, resized_image)
-        except Exception as e:
-            print(f"Error loading or resizing image: {e}")
 
     def __init__(self, lot, date_debut, date_fin):
         button_width = 50
@@ -46,7 +31,7 @@ class PlanificationLot:
         date_debut_entry.grid(row=1,column=1, sticky="w")
         date_debut_picker = CTkButton(planification_ordre, text= "",
                                         width=button_width, height=button_height,
-                                        image=self.resize_image("static\\date.png", button_width, button_height),
+                                        image=settings.resize_image("static\\date.png", button_width, button_height),
                                         command= lambda: ViewCalendrier(self.date_debut))
         date_debut_picker.grid(row=1, column=2)
         #Date fin
@@ -56,7 +41,7 @@ class PlanificationLot:
         date_fin_entry.grid(row=2,column=1, sticky="w")
         date_debut_picker = CTkButton(planification_ordre, text= "",
                                         width=button_width, height=button_height,
-                                        image=self.resize_image("static\\date.png", button_width, button_height),
+                                        image=settings.resize_image("static\\date.png", button_width, button_height),
                                         command= lambda: ViewCalendrier(self.date_fin))
         date_debut_picker.grid(row=2, column=2)
 

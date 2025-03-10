@@ -7,8 +7,6 @@ from app.views.view_calendrier import ViewCalendrier
 from app.views.view_message_erreur import MessageErreur
 from app.views.view_production_planification_nouveau import PlanificationLot
 from app.views.view_production_planification_article import PlanificationArticle
-from PIL import Image
-from os import path
 import utils.settings as settings
 
 class Batch:
@@ -30,19 +28,6 @@ class Batch:
         self.date_debut.set(values[3])
         self.date_fin.set(values[4])
         self.status = values[2]
-
-
-    def resize_image(self, icon_path: str, image_width: int, image_height:int):
-        try:
-            image_path = path.abspath(path.join(settings.path_name,icon_path))
-            # Open the image
-            original_image = Image.open(image_path)
-            # Resize the image to fit the button
-            resized_image = original_image.resize((image_width, image_height))
-            # Convert the resized image to a Tkinter-compatible format
-            return ctk.CTkImage(resized_image, resized_image)
-        except Exception as e:
-            print(f"Error loading or resizing image: {e}")
 
     def plan_lot(self, lot: str, status: str, date_debut: str, date_fin:str):
         if lot == '':
@@ -110,7 +95,7 @@ class Batch:
         frame1_date_debut.grid(row=4,column=1)
         frame1_date_debut_picker = ctk.CTkButton(self.frame1, text= "",
                                                  width=button_width, height=button_height,
-                                                 image=self.resize_image("static\\date.png", button_width, button_height),
+                                                 image=settings.resize_image("static\\date.png", button_width, button_height),
                                                  command= lambda:ViewCalendrier(self.date_debut))
         frame1_date_debut_picker.grid(row=4, column=2)
         #Date fin
@@ -120,14 +105,14 @@ class Batch:
         frame1_date_fin.grid(row=5,column=1)
         frame1_date_fin_picker = ctk.CTkButton(self.frame1, text= "",
                                                  width=button_width, height=button_height,
-                                                 image=self.resize_image("static\\date.png", button_width, button_height),
+                                                 image=settings.resize_image("static\\date.png", button_width, button_height),
                                                  command= lambda: ViewCalendrier(self.date_fin))
         frame1_date_fin_picker.grid(row=5, column=2)
 
         #Planifier le batch
         self.frame1_adding_button = ctk.CTkButton(self.frame1, text ="Planifier lot", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\planification.png", button_width, button_height),
+                                                  image=settings.resize_image("static\\planification.png", button_width, button_height),
                                                   command= lambda: [self.plan_lot(lot=self.lot.get(), status=self.status, 
                                                                                   date_debut=self.date_debut.get(), date_fin=self.date_fin.get()),
                                                                     ControllerPlanification.populate_ordre_to_be_worked_on(treeview=frame2_treeview),
@@ -138,14 +123,14 @@ class Batch:
         #Modification article sur le lot
         self.frame1_adding_button = ctk.CTkButton(self.frame1, text ="Article", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\article.png", button_width, button_height),
+                                                  image=settings.resize_image("static\\article.png", button_width, button_height),
                                                   command= lambda: [self.modification_article_lot(lot=self.lot.get())])
 
         self.frame1_adding_button.grid(row=1, column=3)
         #Terminer un lot
         self.frame1_refresh_button = ctk.CTkButton(self.frame1, text ="Terminer lot", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\ok.png", button_width, button_height),
+                                                  image=settings.resize_image("static\\ok.png", button_width, button_height),
                                                   command= lambda: [ControllerPlanification.finish_ordre(self.lot.get()),
                                                                     self.clear_information_panel(),
                                                                     ControllerPlanification.populate_ordre_to_be_worked_on(treeview=frame2_treeview),
@@ -155,7 +140,7 @@ class Batch:
         #Sauvegarder changement de date
         self.frame1_save_button = ctk.CTkButton(self.frame1, text ="Enregistrer", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\sauvegarder.png", button_width, button_height),
+                                                  image=settings.resize_image("static\\sauvegarder.png", button_width, button_height),
                                                   command= lambda: [ControllerPlanification.update_date(lot=self.lot.get(),
                                                                                                        date_debut=self.date_debut.get(),
                                                                                                        date_fin=self.date_fin.get()),
@@ -166,7 +151,7 @@ class Batch:
         #Rafraîchir les listes
         self.frame1_refresh_button = ctk.CTkButton(self.frame1, text ="Rafraîchir", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\recharger.png", button_width, button_height),
+                                                  image=settings.resize_image("static\\recharger.png", button_width, button_height),
                                                   command= lambda: [self.clear_information_panel(),
                                                                     ControllerPlanification.populate_ordre_to_be_worked_on(treeview=frame2_treeview),
                                                                     ControllerPlanification.populate_all_ordre_to_work_on(treeview=frame3_treeview)])

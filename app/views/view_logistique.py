@@ -6,8 +6,6 @@ from app.views.view_logistique_creation_camion import LogistiqueCamion
 from app.views.view_message_erreur import MessageErreur
 from app.controller.controller_chargement import ControllerChargement
 from utils import settings
-from os import path
-from PIL import Image
 from datetime import datetime
 
 class Logistique:
@@ -42,18 +40,6 @@ class Logistique:
                 sortie = None
             new_line = [camion[0], entree, sortie, camion[5], camion[6], camion[7]]
             self.frame3_treeview.insert("", "end", values=new_line)
-
-    def resize_image(self, icon_path: str, image_width: int, image_height:int):
-        try:
-            image_path = path.abspath(path.join(settings.path_name,icon_path))
-            # Open the image
-            original_image = Image.open(image_path)
-            # Resize the image to fit the button
-            resized_image = original_image.resize((image_width, image_height))
-            # Convert the resized image to a Tkinter-compatible format
-            return ctk.CTkImage(resized_image, resized_image)
-        except Exception as e:
-            print(f"Error loading or resizing image: {e}")
 
     def __init__(self, parent_frame):
         """
@@ -92,7 +78,7 @@ class Logistique:
         frame1_date_debut.grid(row=2,column=1)
         frame1_date_debut_picker = ctk.CTkButton(self.frame1, text= "",
                                                  width=button_width, height=button_height,
-                                                 image=self.resize_image("static\\date.png", button_width, button_height),
+                                                 image=settings.resize_image("static\\date.png", button_width, button_height),
                                                  command= lambda:ViewCalendrier(self.date_debut))
         frame1_date_debut_picker.grid(row=2, column=2)
         #Date fin
@@ -102,7 +88,7 @@ class Logistique:
         frame1_date_fin.grid(row=3,column=1)
         frame1_date_fin_picker = ctk.CTkButton(self.frame1, text= "",
                                                  width=button_width, height=button_height,
-                                                 image=self.resize_image("static\\date.png", button_width, button_height),
+                                                 image=settings.resize_image("static\\date.png", button_width, button_height),
                                                  command= lambda: ViewCalendrier(self.date_fin))
         frame1_date_fin_picker.grid(row=3, column=2)
         #Description camion
@@ -123,12 +109,12 @@ class Logistique:
         #Add a button to create a new chargement
         frame2_chargement_button = ctk.CTkButton(frame2_button, text="Chargement",
                                             width=button_width, height=button_height, 
-                                            image=self.resize_image("static\\plus.png", button_width, button_height))
+                                            image=settings.resize_image("static\\plus.png", button_width, button_height))
         frame2_chargement_button.pack(side='left')
         #Add a button for additional truck
         frame2_truck_button = ctk.CTkButton(frame2_button, text="Camion",
                                             width=button_width, height=button_height, 
-                                            image=self.resize_image("static\\plus.png", button_width, button_height),
+                                            image=settings.resize_image("static\\plus.png", button_width, button_height),
                                             command= lambda:LogistiqueCamion(self.chargement.get()))
         frame2_truck_button.pack(side='left')
         self.frame21 = ctk.CTkFrame(self.frame2)
@@ -179,7 +165,7 @@ class Logistique:
         #Refresh button
         frame3_refresh_button = ctk.CTkButton(frame3_button, text="Rafraîchir",
                                             width=button_width, height=button_height, 
-                                            image=self.resize_image("static\\recharger.png", button_width, button_height),
+                                            image=settings.resize_image("static\\recharger.png", button_width, button_height),
                                             command= lambda:self.list_camion(self.chargement.get()))
         frame3_refresh_button.pack(side='left')
         #Frame for Treeview

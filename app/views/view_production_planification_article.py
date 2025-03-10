@@ -1,9 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from customtkinter import *
-from PIL import Image
 from app.controller.controller_article_par_lot import ControllerArticleParLot
-from os import path
 import utils.settings as settings
 
 class PlanificationArticle:
@@ -15,18 +13,6 @@ class PlanificationArticle:
             new_line = [article[0], article[1]]
             self.frame11_treeview.insert("", "end", values=new_line)
         self.article.set("")
-
-    def resize_image(self, icon_path: str, image_width: int, image_height:int):
-        try:
-            image_path = path.abspath(path.join(settings.path_name,icon_path))
-            # Open the image
-            original_image = Image.open(image_path)
-            # Resize the image to fit the button
-            resized_image = original_image.resize((image_width, image_height))
-            # Convert the resized image to a Tkinter-compatible format
-            return CTkImage(resized_image, resized_image)
-        except Exception as e:
-            print(f"Error loading or resizing image: {e}")
     
     def set_article_to_delete(self, choice):
         entry = self.frame11_treeview.focus()
@@ -52,7 +38,7 @@ class PlanificationArticle:
         #Add button to add an article to the batch
         frame1_delete_button = CTkButton(planification_ordre, text ="Ajouter article", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\plus.png", button_width, button_height),
+                                                  image=settings.resize_image("static\\plus.png", button_width, button_height),
                                                   command= lambda:[ControllerArticleParLot.add_article(lot, self.article.get()),
                                                                    self.selection_lot(lot)])
         frame1_delete_button.grid(row=0, column=1)
@@ -60,7 +46,7 @@ class PlanificationArticle:
         #Add button to delete article from batch
         frame1_delete_button = CTkButton(planification_ordre, text ="Supprimer article", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\supprimer.png", button_width, button_height),
+                                                  image=settings.resize_image("static\\supprimer.png", button_width, button_height),
                                                   command= lambda:[ControllerArticleParLot.delete_article_in_lot(self.article_to_delete, lot),
                                                                    self.selection_lot(lot)])
         frame1_delete_button.grid(row=1, column=1)

@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
-from os import path
-from PIL import Image
 from app.controller.controller_nomenclature import ControllerNomenclature
 from app.views.view_message_erreur import MessageErreur
 from app.views.view_nomenclature_ajouter import NomenclatureNouveau
@@ -34,18 +32,6 @@ class Nomenclature:
     def get_article_to_delete(self):
         return self.article_to_delete
     
-    def resize_image(self, icon_path: str, image_width: int, image_height:int):
-        try:
-            image_path = path.abspath(path.join(settings.path_name,icon_path))
-            # Open the image
-            original_image = Image.open(image_path)
-            # Resize the image to fit the button
-            resized_image = original_image.resize((image_width, image_height))
-            # Convert the resized image to a Tkinter-compatible format
-            return ctk.CTkImage(resized_image, resized_image)
-        except Exception as e:
-            print(f"Error loading or resizing image: {e}")
-
     def new_article(self):
         if self.article.get() == '':
             MessageErreur("""Choissisez un article dans la liste déroulante""")
@@ -82,21 +68,21 @@ class Nomenclature:
         #Add button to add new article to bom
         self.frame1_adding_button = ctk.CTkButton(self.frame1, text ="Ajouter article", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\plus.png", button_width, button_height),
+                                                  image=settings.resize_image("static\\plus.png", button_width, button_height),
                                                   command=lambda:[self.new_article(),
                                                                 self.bom_selection(choice=None)])
         self.frame1_adding_button.grid(row=2, column=2)
         #Rafraîchir la liste
         self.frame1_refresh_button = ctk.CTkButton(self.frame1, text ="Rafraîchir", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\recharger.png", button_width, button_height),
+                                                  image=settings.resize_image("static\\recharger.png", button_width, button_height),
                                                   command= lambda: self.bom_selection(choice=None))
 
         self.frame1_refresh_button.grid(row=3, column=2)
         #Add button to delete article from bom
         self.frame1_delete_button = ctk.CTkButton(self.frame1, text ="Supprimer article", 
                                                   width=button_width, height=button_height, 
-                                                  image=self.resize_image("static\\supprimer.png", button_width, button_height),
+                                                  image=settings.resize_image("static\\supprimer.png", button_width, button_height),
                                                   command=lambda:[ControllerNomenclature.delete_article_in_bom(front_end_article=self.article.get(),
                                                                                                                article_to_delete=self.get_article_to_delete()),
                                                                 self.bom_selection(choice=None)])
